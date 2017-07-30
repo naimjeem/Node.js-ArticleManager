@@ -10,7 +10,17 @@ app.set('view engine', 'pug');
 
 //Home Route
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', {
+    title: 'Knowledgebase',
+    head: 'Article'
+  });
+});
+
+//Add Route
+app.get('/articles/add', (req, res) => {
+  res.render('add_article', {
+    title: 'Add Article'
+  });
 });
 
 //Start Server

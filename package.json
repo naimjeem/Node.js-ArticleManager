@@ -1,7 +1,7 @@
 {
   "name": "article-manager",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple Node.js Article Manager",
   "main": "app",
   "scripts": {
     "start": "node app"
