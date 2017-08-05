@@ -1,8 +1,23 @@
 const express = require('express');
 const path = require('path');
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://127.0.0.1/nodekb');
+let db = mongoose.connection;
+
+db.open('open', () => {
+  console.log("Connected to MongoDB");
+});
+
+db.error('error', (err) => {
+  console.log(err);
+});
 
 //Express App Init
 const app = express();
+
+//Bring in models
+let Article = require('./models/article');
 
 //Load View Engine
 app.set('views', path.join(__dirname, 'views'));
@@ -11,43 +26,16 @@ app.set('view engine', 'pug');
 //Home Route
 app.get('/', (req, res) => {
 
-  let articles = [
-    {
-      id: 1,
-      title: 'First Article',
-      author: 'Naim Jeem',
-      body: `This is content for article one which is created by Naim Jeem`
-    },
-    {
-      id: 2,
-      title: 'Second Article',
-      author: 'Naim Jeem',
-      body: `This is content for article one which is created by Naim Jeem`
-    },
-    {
-      id: 3,
-      title: 'Third Article',
-      author: 'Naim Jeem',
-      body: `This is content for article one which is created by Naim Jeem`
-    },
-    {
-      id: 4,
-      title: 'Fourth Article',
-      author: 'Ibrahim Zahin',
-      body: `This is content for article one which is created by Naim Jeem`
-    },
-    {
-      id: 5,
-      title: 'Fifth Article',
-      author: 'Ilham Zaara',
-      body: `This is content for article one which is created by Naim Jeem`
+  Article.find({}, (err, articles) => {
+    if (err) {
+      throw err;
     }
-  ];
-
-  res.render('index', {
-    title: 'Knowledgebase',
-    articles: articles
+    res.render('index', {
+      title: 'Knowledgebase',
+      articles: articles
+    });
   });
+
 });
 
 //Add Route
